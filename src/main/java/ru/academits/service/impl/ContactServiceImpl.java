@@ -1,5 +1,7 @@
 package ru.academits.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.academits.dao.ContactDao;
@@ -14,6 +16,8 @@ public class ContactServiceImpl implements ContactService {
 
     @Autowired
     private ContactDao contactDao;
+
+    private static final Logger logger = LoggerFactory.getLogger(ContactServiceImpl.class);
 
     private boolean isExistContactWithPhone(String phone) {
         List<Contact> contactList = contactDao.getAllContacts();
@@ -59,6 +63,7 @@ public class ContactServiceImpl implements ContactService {
     public ContactValidation addContact(Contact contact) {
         ContactValidation contactValidation = validateContact(contact);
         if (contactValidation.isValid()) {
+            logger.info("Validation of contact is successful");
             contactDao.add(contact);
         }
         return contactValidation;

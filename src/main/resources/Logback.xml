@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <property name="DEV_HOME" value="c:/logs"/>
+
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <appender name="FILE-AUDIT"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${DEV_HOME}/phonebookspring.log</file>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${DEV_HOME}/archived/phonebookspring.%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="ru.academits" level="debug" additivity="false">
+        <appender-ref ref="FILE-AUDIT"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <logger name="org.springframework.web" level="info" additivity="false">
+        <appender-ref ref="FILE-AUDIT"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <root level="warn">
+        <appender-ref ref="FILE-AUDIT"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

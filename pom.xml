@@ -9,7 +9,7 @@
 	<packaging>war</packaging>
 
 	<name>phonebookSpring</name>
-	<description></description>
+	<description>Spring Boot  application with Logs</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

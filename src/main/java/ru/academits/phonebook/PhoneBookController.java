@@ -1,5 +1,8 @@
 package ru.academits.phonebook;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.academits.converter.ContactDtoToContactConverter;
@@ -15,28 +18,38 @@ import java.util.List;
 @RequestMapping("/phoneBook/rcp/api/v1")
 public class PhoneBookController {
 
+    private static final Logger logger = LoggerFactory.getLogger(PhoneBookController.class);
+
     @Autowired
     private ContactService contactService;
 
     @Autowired
-    private ContactToContactDtoConverter contactToContectDtoConverter;
+    private ContactToContactDtoConverter contactToContactDtoConverter;
 
     @Autowired
     private ContactDtoToContactConverter contactDtoToContactConverter;
 
     @RequestMapping(value = "getAllContacts", method = RequestMethod.GET)
     public List<ContactDto> getAllContacts() {
-        return contactToContectDtoConverter.convert(contactService.getAllContacts());
+        logger.info("called method getAllContacts");
+        return contactToContactDtoConverter.convert(contactService.getAllContacts());
     }
 
     @RequestMapping(value = "addContact", method = RequestMethod.POST)
     public ContactValidation addContact(@RequestBody ContactDto contact) {
+        logger.info("called method addContact");
+        String requestBody = "request body: first name = " + contact.getFirstName()
+                + " last name = " + contact.getLastName() + " phone = " + contact.getPhone();
+        logger.info(requestBody);
         Contact contactEntity = contactDtoToContactConverter.convert(contact);
         return contactService.addContact(contactEntity);
     }
 
     @RequestMapping(value = "removeContacts", method = RequestMethod.POST)
     public void removeContacts(@RequestParam("ids[]") String[] ids) {
+        logger.info("called method removeContacts");
+        String requestParam = "request parameters: Ids = " + java.util.Arrays.toString(ids);
+        logger.info(requestParam);
         contactService.removeContacts(ids);
     }
 }
